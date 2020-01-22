@@ -13,7 +13,7 @@ async function getAPIKey(url) {
 
 async function getWundergroundData() {
 	today = new Date()
-	today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + 420)
+	// today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + 420)
 	today.setDate(today.getDate() - 1)
 	year = (today.getYear() + 1900).toString()
 	month = today.getMonth() + 1
@@ -47,7 +47,7 @@ async function getWundergroundData() {
 			weatherData = res.data.observations
 			for (let i in weatherData) {
 				tmpWeather = weatherData[i]
-				tmpTime = new Date((tmpWeather.valid_time_gmt + 420 * 60) * 1000)
+				tmpTime = new Date(tmpWeather.valid_time_gmt * 1000)
 				tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 				tmpTemperature = tmpWeather.temp
 				tmpDewPoint = tmpWeather.dewPt
