@@ -37,7 +37,7 @@ async function getOpenWeatherMapData() {
 	let tmpTime = new Date()
 	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
-	let tmpMain = data.weather.main
+	let tmpMain = data.weather[0].main
 	let tmpDescription = data.weather[0].description
 	let tmpTemperature = data.main.temp
 	let tmpPressure = data.main.pressure
