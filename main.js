@@ -6,5 +6,6 @@ async function main() {
 	getOpenWeatherMapData()
 }
 
-main()
-setInterval(main, 1*60*1000)
+main().then(() => {
+	setInterval(main, 1*60*1000)
+})
