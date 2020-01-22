@@ -13,6 +13,7 @@ async function getAPIKey(url) {
 
 async function getWundergroundData() {
 	today = new Date()
+	today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + 420)
 	today.setDate(today.getDate() - 1)
 	year = (today.getYear() + 1900).toString()
 	month = today.getMonth() + 1

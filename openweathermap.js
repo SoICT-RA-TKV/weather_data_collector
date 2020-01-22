@@ -13,6 +13,7 @@ async function getOpenWeatherMapData() {
 		row[i] = row[i].padStart(Math.max(row[i].length + 3, 15)) + ','
 	}
 	today = new Date()
+	today.setMinutes(today.getMinutes() + today.getTimezoneOffset() + 420)
 	year = (today.getYear() + 1900).toString()
 	month = today.getMonth() + 1
 	if (month < 10) {
@@ -34,6 +35,7 @@ async function getOpenWeatherMapData() {
 	data = await axios.get(url)
 	data = data.data
 	tmpTime = new Date()
+	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 	tmpMain = data.weather.main
 	tmpDescription = data.weather[0].description
