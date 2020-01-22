@@ -47,6 +47,7 @@ async function getWundergroundData() {
 			for (let i in weatherData) {
 				let tmpWeather = weatherData[i]
 				let tmpTime = new Date(tmpWeather.valid_time_gmt * 1000)
+				tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 				tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 				let tmpTemperature = tmpWeather.temp
 				let tmpDewPoint = tmpWeather.dewPt
