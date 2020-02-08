@@ -1,3 +1,4 @@
 node_modules/
 openweathermap/*.txt
 wunderground/*.txt
+darksky/*.txt

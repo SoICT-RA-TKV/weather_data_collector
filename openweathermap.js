@@ -27,7 +27,7 @@ async function getOpenWeatherMapData() {
 
 	if (!fs.existsSync('openweathermap/' + dateString + '.txt')) {
 		fd = fs.openSync('openweathermap/' + dateString + '.txt', 'w')
-		fs.writeSync(fd, row.join('') + '\n')
+		fs.writeSync(fd, row.join('\t') + '\n')
 	} else {
 		fd = fs.openSync('openweathermap/' + dateString + '.txt', 'a')
 	}
@@ -51,7 +51,7 @@ async function getOpenWeatherMapData() {
 	for (let j in tmpData) {
 		tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
 	}
-	fs.writeSync(fd, tmpData.join('') + '\n')
+	fs.writeSync(fd, tmpData.join('\t') + '\n')
 	fs.closeSync(fd)
 }
 

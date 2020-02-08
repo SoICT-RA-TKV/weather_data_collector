@@ -42,7 +42,7 @@ async function getWundergroundData() {
 
 		let fd = fs.openSync('wunderground/' + dateString + '.txt', 'w')
 		axios.get(reqURL).then(res => {
-			fs.writeSync(fd, row.join('') + '\n')
+			fs.writeSync(fd, row.join('\t') + '\n')
 			weatherData = res.data.observations
 			for (let i in weatherData) {
 				let tmpWeather = weatherData[i]
@@ -62,10 +62,12 @@ async function getWundergroundData() {
 				for (let j in tmpData) {
 					tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
 				}
-				fs.writeSync(fd, tmpData.join('') + '\n')
+				fs.writeSync(fd, tmpData.join('\t') + '\n')
 			}
 		})
 	})
 }
+
+getWundergroundData()
 
 module.exports = getWundergroundData
