@@ -23,7 +23,7 @@ async function getDarkSkyData() {
 	} else {
 		month = '' + month
 	}
-	let date = today.getDate().toString()
+	let date = today.getDate().toString().padStart(2, '0')
 
 	let dateString = [year, month, date].join('-')
 
@@ -40,10 +40,19 @@ async function getDarkSkyData() {
 	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 	let tmpSummary = data.currently.summary
+	if (tmpSummary != null) {
+		tmpSummary = tmpSummary.replace(' ', '_').replace(',', '/')
+	}
 	let tmpIcon = data.currently.icon
+	if (tmpIcon != null) {
+		tmpIcon = tmpIcon.replace(' ', '_').replace(',', '/')
+	}
 	let tmpPrecipIntensity = data.currently.precipIntensity
 	let tmpPrecipProbability = data.currently.precipProbability
 	let tmpPrecipType = data.currently.precipType
+	if (tmpPrecipType != null) {
+		tmpPrecipType = tmpPrecipType.replace(' ', '_').replace(',', '/')
+	}
 	let tmpTemperature = data.currently.temperature
 	let tmpApperentTemperature = data.currently.apparentTemperature
 	let tmpDewPoint = data.currently.dewPoint
@@ -65,6 +74,10 @@ async function getDarkSkyData() {
 	fs.closeSync(fd)
 }
 
+getDarkSkyData().then(() => {
+	setInterval(getDarkSkyData, 5*60*1000)
+})
+
 module.exports = getDarkSkyData
 
-getDarkSkyData()
+// getDarkSkyData()

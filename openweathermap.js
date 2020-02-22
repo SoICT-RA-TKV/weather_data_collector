@@ -21,7 +21,7 @@ async function getOpenWeatherMapData() {
 	} else {
 		month = '' + month
 	}
-	let date = today.getDate().toString()
+	let date = today.getDate().toString().padStart(2, '0')
 
 	let dateString = [year, month, date].join('-')
 
@@ -38,7 +38,13 @@ async function getOpenWeatherMapData() {
 	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 	let tmpMain = data.weather[0].main
+	if (tmpMain != null) {
+		tmpMain = tmpMain.replace(' ', '_').replace(',', '/')
+	}
 	let tmpDescription = data.weather[0].description
+	if (tmpDescription != null) {
+		tmpDescription = tmpDescription.replace(' ', '_').replace(',', '/')
+	}
 	let tmpTemperature = data.main.temp
 	let tmpPressure = data.main.pressure
 	let tmpHumidity = data.main.humidity
@@ -54,5 +60,9 @@ async function getOpenWeatherMapData() {
 	fs.writeSync(fd, tmpData.join('\t') + '\n')
 	fs.closeSync(fd)
 }
+
+getOpenWeatherMapData().then(() => {
+	setInterval(getOpenWeatherMapData, 1*60*1000)
+})
 
 module.exports = getOpenWeatherMapData

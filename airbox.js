@@ -37,7 +37,7 @@ async function getAirBoxData() {
 	} else {
 		month = '' + month
 	}
-	let date = today.getDate().toString()
+	let date = today.getDate().toString().padStart(2, '0')
 
 	let dateString = [year, month, date].join('-')
 
@@ -83,3 +83,5 @@ async function getAirBoxData() {
 getAirBoxData().then(() => {
 	setInterval(getAirBoxData, 1*60*1000)
 })
+
+module.exports = getAirBoxData

@@ -21,7 +21,7 @@ async function getWundergroundData() {
 	} else {
 		month = '' + month
 	}
-	let date = today.getDate().toString()
+	let date = today.getDate().toString().padStart(2, '0')
 
 	let dateString = [year, month, date].join('-')
 	let url = 'https://www.wunderground.com/history/daily/vn/soc-son/VVNB/date/' + dateString + '/'
@@ -53,10 +53,16 @@ async function getWundergroundData() {
 				let tmpDewPoint = tmpWeather.dewPt
 				let tmpHumidity = tmpWeather.rh
 				let tmpWind = tmpWeather.wdir_cardinal
+				if (tmpWind != null) {
+					tmpWind = tmpWind.replace(' ', '_').replace(',', '/')
+				}
 				let tmpWindSpeed = tmpWeather.wspd
 				let tmpWindGust = tmpWeather.gust
 				let tmpPressure = tmpWeather.pressure
 				let tmpCondition = tmpWeather.wx_phrase
+				if (tmpCondition != null) {
+					tmpCondition = tmpCondition.replace(' ', '_').replace(',', '/')
+				}
 				let tmpVisibility = tmpWeather.vis
 				let tmpData = [tmpTime, tmpTemperature, tmpDewPoint, tmpHumidity, tmpWind, tmpWindSpeed, tmpWindGust, tmpPressure, tmpCondition, tmpVisibility]
 				for (let j in tmpData) {
@@ -68,6 +74,10 @@ async function getWundergroundData() {
 	})
 }
 
-getWundergroundData()
+getWundergroundData().then(() => {
+	setInterval(getWundergroundData, 1*60*1000)
+})
+
+// getWundergroundData()
 
 module.exports = getWundergroundData
