@@ -75,7 +75,7 @@ async function getDarkSkyData() {
 }
 
 getDarkSkyData().then(() => {
-	setInterval(getDarkSkyData, 5*60*1000)
+	setInterval(getDarkSkyData, 1*60*1000)
 })
 
 module.exports = getDarkSkyData
