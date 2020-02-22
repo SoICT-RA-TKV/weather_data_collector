@@ -3,3 +3,4 @@ openweathermap/*.txt
 wunderground/*.txt
 darksky/*.txt
 airbox/*.txt
+*.txt
