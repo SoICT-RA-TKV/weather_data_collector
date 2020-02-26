@@ -1,13 +1,19 @@
-let getWundergroundData = require('./wunderground')
-let getOpenWeatherMapData = require('./openweathermap')
-let getAirBoxData = require('./airbox')
-let getDarksky = require('./darksky')
+let WundergroundData = require('./wunderground')
+let OpenWeatherMapData = require('./openweathermap')
+let AirBoxData = require('./airbox')
+let Darksky = require('./darksky')
+let mongodb = require('mongodb')
 
-// async function main() {
-// 	getWundergroundData()
-// 	getOpenWeatherMapData()
-// }
+async function main() {
+	var mongoClient = mongodb.MongoClient
+	var url = "mongodb://sv2.teambit.tech/"
+	var srv = await mongoClient.connect(url)
+	var db = srv.db('weather')
 
-// main().then(() => {
-// 	setInterval(main, 1*60*1000)
-// })
+	WundergroundData(db.collection('wunderground'))
+	OpenWeatherMapData(db.collection('openweathermap'))
+	AirBoxData(db.collection('airbox'))
+	Darksky(db.collection('darksky'))
+}
+
+main()

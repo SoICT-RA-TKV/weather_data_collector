@@ -1,6 +1,8 @@
 let axios = require('axios')
 let fs = require('fs')
 
+let collection = null
+
 async function getAirBoxData() {
 	let queryInfo = {
 		'method': 'POST',
@@ -71,12 +73,23 @@ async function getAirBoxData() {
 
 	tmpData = [tmpTime, tmpPM1, tmpPM25, tmpPM10, tmpT, tmpH]
 
-	for (let j in tmpData) {
-		row[j] = row[j].toString()
-		tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+	jsonData = {
+		"Time": today,
+		"Airbox_PM1": tmpPM1,
+		"Airbox_PM25": tmpPM25,
+		"Airbox_PM10": tmpPM10,
+		"Airbox_Temperature": tmpT,
+		"Airbox_Humidity": tmpH
 	}
-	fs.writeSync(fd, tmpData.join('\t') + '\n')
-	fs.closeSync(fd)
+
+	collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
+
+	// for (let j in tmpData) {
+	// 	row[j] = row[j].toString()
+	// 	tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+	// }
+	// fs.writeSync(fd, tmpData.join('\t') + '\n')
+	// fs.closeSync(fd)
 }
 	
 
@@ -84,4 +97,8 @@ getAirBoxData().then(() => {
 	setInterval(getAirBoxData, 1*60*1000)
 })
 
-module.exports = getAirBoxData
+async function setDB(col) {
+	collection = col
+}
+
+module.exports = setDB

@@ -1,6 +1,8 @@
 let axios = require('axios')
 let fs = require('fs')
 
+let collection = null
+
 async function getDarkSkyData() {
 	const apiKey = '3996e9f26ff4b088644a901f3b718d97'
 	const latitude = '21.0044157'
@@ -36,7 +38,7 @@ async function getDarkSkyData() {
 
 	let data = await axios.get(url)
 	data = data.data
-	let tmpTime = new Date()
+	let tmpTime = today
 	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 	let tmpSummary = data.currently.summary
@@ -67,11 +69,35 @@ async function getDarkSkyData() {
 	let tmpOzone = data.currently.ozone
 	let tmpData = [tmpTime, tmpSummary, tmpIcon, tmpPrecipIntensity, tmpPrecipProbability, tmpPrecipType, tmpTemperature, tmpApperentTemperature,
 		tmpDewPoint, tmpHumidity, tmpPressure, tmpWindSpeed, tmpWindGust, tmpWindBearing, tmpCloudCover, tmpUVIndex, tmpVisibility, tmpOzone]
-	for (let j in tmpData) {
-		tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+
+	jsonData = {
+		'Time': today,
+		'Darksky_Summary': tmpSummary,
+		'Darksky_Icon': tmpIcon,
+		'Darksky_PrecipIntensity': tmpPrecipIntensity,
+		'Darksky_PrecipProbability': tmpPrecipProbability,
+		'Darksky_PrecipType': tmpPrecipType,
+		'Darksky_Temperature': tmpTemperature,
+		'Darksky_ApparentTemperature': tmpApperentTemperature,
+		'Darksky_DewPoint': tmpDewPoint,
+		'Darksky_Humidity': tmpHumidity,
+		'Darksky_Pressure': tmpPressure,
+		'Darksky_WinSpeed': tmpWindSpeed,
+		'Darksky_WindGust': tmpWindGust,
+		'Darksky_WindBearing': tmpWindBearing,
+		'Darksky_CloudCover': tmpCloudCover,
+		'Darksky_UVIndex': tmpUVIndex,
+		'Darksky_Visibility': tmpVisibility,
+		'Darksky_Ozone': tmpOzone
 	}
-	fs.writeSync(fd, tmpData.join('\t') + '\n')
-	fs.closeSync(fd)
+
+	collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
+
+	// for (let j in tmpData) {
+	// 	tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+	// }
+	// fs.writeSync(fd, tmpData.join('\t') + '\n')
+	// fs.closeSync(fd)
 }
 
 getDarkSkyData().then(() => {
@@ -80,4 +106,8 @@ getDarkSkyData().then(() => {
 
 module.exports = getDarkSkyData
 
-// getDarkSkyData()
+async function setDB(col) {
+	collection = col
+}
+
+module.exports = setDB

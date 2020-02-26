@@ -1,6 +1,8 @@
 let axios = require('axios')
 let fs = require('fs')
 
+let collection = null
+
 async function getOpenWeatherMapData() {
 	const apiKey = '72f5455137b440f773d48b8d98081892'
 
@@ -34,7 +36,7 @@ async function getOpenWeatherMapData() {
 
 	let data = await axios.get(url)
 	data = data.data
-	let tmpTime = new Date()
+	let tmpTime = today
 	tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 	tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 	let tmpMain = data.weather[0].main
@@ -54,15 +56,37 @@ async function getOpenWeatherMapData() {
 	let tmpClouds = data.clouds.all
 	let tmpData = [tmpTime, tmpMain, tmpDescription, tmpTemperature, tmpPressure, tmpHumidity, tmpVisibility,
 		tmpWinSpeed, tmpWinDeg, tmpClouds]
-	for (let j in tmpData) {
-		tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+
+	let jsonData = {
+		'Time': today,
+		'OpenWeatherMap_Main': tmpMain,
+		'OpenWeatherMap_Description': tmpDescription,
+		'OpenWeatherMap_Temperature': tmpTemperature,
+		'OpenWeatherMap_Pressure': tmpPressure,
+		'OpenWeatherMap_Humidity': tmpHumidity,
+		'OpenWeatherMap_Visibility': tmpVisibility,
+		'OpenWeatherMap_WindSpeed': tmpWinSpeed,
+		'OpenWeatherMap_WindDeg': tmpWinDeg,
+		'OpenWeatherMap_Clouds': tmpClouds
 	}
-	fs.writeSync(fd, tmpData.join('\t') + '\n')
-	fs.closeSync(fd)
+
+	console.log(jsonData)
+
+	collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
+
+	// for (let j in tmpData) {
+	// 	tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+	// }
+	// fs.writeSync(fd, tmpData.join('\t') + '\n')
+	// fs.closeSync(fd)
 }
 
 getOpenWeatherMapData().then(() => {
 	setInterval(getOpenWeatherMapData, 1*60*1000)
 })
 
-module.exports = getOpenWeatherMapData
+async function setDB(col) {
+	collection = col
+}
+
+module.exports = setDB

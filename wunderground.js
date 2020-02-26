@@ -1,6 +1,8 @@
 let axios = require('axios')
 let fs = require('fs')
 
+let collection = null
+
 async function getAPIKey(url) {
 	let apiKey =  await axios.get(url).then(res => {
 		str = res.data
@@ -47,6 +49,7 @@ async function getWundergroundData() {
 			for (let i in weatherData) {
 				let tmpWeather = weatherData[i]
 				let tmpTime = new Date(tmpWeather.valid_time_gmt * 1000)
+				let tmpTime2 = tmpTime
 				tmpTime.setMinutes(tmpTime.getMinutes() + tmpTime.getTimezoneOffset() + 420)
 				tmpTime = [tmpTime.getHours().toString().padStart(2, '0'), tmpTime.getMinutes().toString().padStart(2, '0')].join(':')
 				let tmpTemperature = tmpWeather.temp
@@ -65,10 +68,26 @@ async function getWundergroundData() {
 				}
 				let tmpVisibility = tmpWeather.vis
 				let tmpData = [tmpTime, tmpTemperature, tmpDewPoint, tmpHumidity, tmpWind, tmpWindSpeed, tmpWindGust, tmpPressure, tmpCondition, tmpVisibility]
-				for (let j in tmpData) {
-					tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+
+				let jsonData = {
+					'Time': tmpTime2,
+					'Wunderground_Temperature': tmpTemperature,
+					'Wunderground_DewPoint': tmpDewPoint,
+					'Wunderground_Humidity': tmpHumidity,
+					'Wunderground_Wind': tmpWind,
+					'Wunderground_WindSpeed': tmpWindSpeed,
+					'Wunderground_WindGust': tmpWindGust,
+					'Wunderground_Pressure': tmpPressure,
+					'Wunderground_Condition': tmpCondition,
+					'Wunderground_Visibility': tmpVisibility
 				}
-				fs.writeSync(fd, tmpData.join('\t') + '\n')
+
+				collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
+
+				// for (let j in tmpData) {
+				// 	tmpData[j] = (tmpData[j] || '0').toString().padStart(row[j].length - 1) + ','
+				// }
+				// fs.writeSync(fd, tmpData.join('\t') + '\n')
 			}
 		})
 	})
@@ -79,5 +98,8 @@ getWundergroundData().then(() => {
 })
 
 // getWundergroundData()
+async function setDB(col) {
+	collection = col
+}
 
-module.exports = getWundergroundData
+module.exports = setDB
