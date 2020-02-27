@@ -82,6 +82,8 @@ async function getAirBoxData() {
 		"Airbox_Humidity": tmpH
 	}
 
+	console.log(jsonData)
+
 	collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
 
 	// for (let j in tmpData) {

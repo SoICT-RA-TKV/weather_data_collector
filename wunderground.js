@@ -82,6 +82,8 @@ async function getWundergroundData() {
 					'Wunderground_Visibility': tmpVisibility
 				}
 
+				console.log(jsonData)
+
 				collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
 
 				// for (let j in tmpData) {

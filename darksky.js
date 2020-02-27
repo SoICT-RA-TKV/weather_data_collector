@@ -91,6 +91,8 @@ async function getDarkSkyData() {
 		'Darksky_Ozone': tmpOzone
 	}
 
+	console.log(jsonData)
+
 	collection.updateOne({"Time": jsonData['Time']}, {"$set": jsonData}, {"upsert": true})
 
 	// for (let j in tmpData) {
