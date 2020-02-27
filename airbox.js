@@ -49,12 +49,12 @@ async function getAirBoxData() {
 		row[i] = row[i].padStart(Math.max(row[i].length + 3, 15)) + ','
 	}
 
-	if (!fs.existsSync('airbox/' + dateString + '.txt')) {
-		fd = fs.openSync('airbox/' + dateString + '.txt', 'w')
-		fs.writeSync(fd, row.join('\t') + '\n')
-	} else {
-		fd = fs.openSync('airbox/' + dateString + '.txt', 'a')
-	}
+	// if (!fs.existsSync('airbox/' + dateString + '.txt')) {
+	// 	fd = fs.openSync('airbox/' + dateString + '.txt', 'w')
+	// 	fs.writeSync(fd, row.join('\t') + '\n')
+	// } else {
+	// 	fd = fs.openSync('airbox/' + dateString + '.txt', 'a')
+	// }
 
 	let tmpTime = [today.getHours().toString().padStart(2, '0'), today.getMinutes().toString().padStart(2, '0')].join(':')
 	let tmpPM1 = 'null'

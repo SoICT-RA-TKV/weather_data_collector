@@ -27,12 +27,12 @@ async function getOpenWeatherMapData() {
 
 	let dateString = [year, month, date].join('-')
 
-	if (!fs.existsSync('openweathermap/' + dateString + '.txt')) {
-		fd = fs.openSync('openweathermap/' + dateString + '.txt', 'w')
-		fs.writeSync(fd, row.join('\t') + '\n')
-	} else {
-		fd = fs.openSync('openweathermap/' + dateString + '.txt', 'a')
-	}
+	// if (!fs.existsSync('openweathermap/' + dateString + '.txt')) {
+	// 	fd = fs.openSync('openweathermap/' + dateString + '.txt', 'w')
+	// 	fs.writeSync(fd, row.join('\t') + '\n')
+	// } else {
+	// 	fd = fs.openSync('openweathermap/' + dateString + '.txt', 'a')
+	// }
 
 	let data = await axios.get(url)
 	data = data.data

@@ -29,12 +29,12 @@ async function getDarkSkyData() {
 
 	let dateString = [year, month, date].join('-')
 
-	if (!fs.existsSync('darksky/' + dateString + '.txt')) {
-		fd = fs.openSync('darksky/' + dateString + '.txt', 'w')
-		fs.writeSync(fd, row.join('\t') + '\n')
-	} else {
-		fd = fs.openSync('darksky/' + dateString + '.txt', 'a')
-	}
+	// if (!fs.existsSync('darksky/' + dateString + '.txt')) {
+	// 	fd = fs.openSync('darksky/' + dateString + '.txt', 'w')
+	// 	fs.writeSync(fd, row.join('\t') + '\n')
+	// } else {
+	// 	fd = fs.openSync('darksky/' + dateString + '.txt', 'a')
+	// }
 
 	let data = await axios.get(url)
 	data = data.data

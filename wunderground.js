@@ -42,9 +42,9 @@ async function getWundergroundData() {
 			row[i] = row[i].padStart(Math.max(row[i].length + 3, 15)) + ','
 		}
 
-		let fd = fs.openSync('wunderground/' + dateString + '.txt', 'w')
+		// let fd = fs.openSync('wunderground/' + dateString + '.txt', 'w')
 		axios.get(reqURL).then(res => {
-			fs.writeSync(fd, row.join('\t') + '\n')
+			// fs.writeSync(fd, row.join('\t') + '\n')
 			weatherData = res.data.observations
 			for (let i in weatherData) {
 				let tmpWeather = weatherData[i]
