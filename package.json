@@ -1,0 +1,25 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "axios": "^0.19.1",
+    "delay": "^4.3.0",
+    "mongodb": "^3.5.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoICT-RA-TKV/weather_data_collector.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SoICT-RA-TKV/weather_data_collector/issues"
+  },
+  "homepage": "https://github.com/SoICT-RA-TKV/weather_data_collector#readme"
+}
