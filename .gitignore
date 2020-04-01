@@ -4,3 +4,4 @@ wunderground/*.txt
 darksky/*.txt
 airbox/*.txt
 *.txt
+.env

@@ -1,3 +1,4 @@
+let env = require('dotenv').config().parsed
 let WundergroundData = require('./wunderground')
 let OpenWeatherMapData = require('./openweathermap')
 let AirBoxData = require('./airbox')
@@ -6,7 +7,7 @@ let mongodb = require('mongodb')
 
 async function main() {
 	var mongoClient = mongodb.MongoClient
-	var url = "mongodb://sv2.teambit.tech/"
+	var url = env.URI
 	var srv = await mongoClient.connect(url)
 	var db = srv.db('weather')
 
